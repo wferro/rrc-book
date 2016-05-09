@@ -4,7 +4,7 @@ var router = express.Router();
 
 // GET ALL
 router.get('/', function(req, res) {
-    usersDb.readAllStudents(
+    usersDb.readAllUsers(
         function(results) {
             res.json(results);
         },
@@ -20,7 +20,7 @@ router.get('/', function(req, res) {
 
 // GET ONE
 router.get('/:email', function(req, res) {
-    usersDb.readStudent(req.params.email,
+    usersDb.readUser(req.params.email,
         function(results) {
             res.json(results);
         },
@@ -36,10 +36,10 @@ router.get('/:email', function(req, res) {
 
 // POST
 router.post('/', function(req, res) {
-    var student = new Student(req.body.name, req.body.email, req.body.program);
-    usersDb.createStudent(student,
+    var user = new User(req.body.name, req.body.email);
+    usersDb.createUser(user,
         function() {
-            res.json({message: "Student created"})
+            res.json({message: "User created"})
         },
 
         function(error){
@@ -53,10 +53,10 @@ router.post('/', function(req, res) {
 
 // PUT
 router.put('/', function(req, res) {
-    var student = new Student(req.body.name, req.body.email, req.body.program);
-    usersDb.updateStudent(student,
+    var user = new User(req.body.name, req.body.email, req.body.program, req.body.campus, req.body.bio);
+    usersDb.updateUser(user,
         function(results) {
-            res.json({message: "Student updated"})
+            res.json({message: "User updated"})
         },
 
         function(error){
@@ -70,9 +70,9 @@ router.put('/', function(req, res) {
 
 // DELETE
 router.delete('/:email', function(req, res) {
-    usersDb.deleteStudent(req.params.email,
+    usersDb.deleteUser(req.params.email,
         function(results) {
-            res.json({message: "Student deleted"})
+            res.json({message: "User deleted"})
         },
 
         function(error){
@@ -83,10 +83,12 @@ router.delete('/:email', function(req, res) {
         });
 });
 
-function Student(name, email, program) {
+function User(name, email, program, campus, bio) {
     this.name = name;
     this.email = email;
     this.program = program;
+    this.campus = campus;
+    this.bio = bio;
 }
 
 module.exports = router;
