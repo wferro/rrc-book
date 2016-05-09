@@ -22,10 +22,10 @@ module.exports = {
         );
     },
 
-    createUser: function(user, successCallback, errorCallback) {
+    createUser: function(user, password, successCallback, errorCallback) {
         console.log('DB - createUser ' + JSON.stringify(user));
         db.connection.query("INSERT INTO profile VALUES(?, ?, null, null, null, ?)",
-            [user.email, user.name, user.password],
+            [user.email, user.name, password],
             function(err, results, fields) {
                 if (err) return errorCallback(err);
                 return successCallback();
@@ -35,11 +35,12 @@ module.exports = {
 
     updateUser: function(user, successCallback, errorCallback) {
         console.log('DB - updateUser ' + JSON.stringify(user));
+        debugger;
         db.connection.query('UPDATE profile SET ' +
-            'ds_profile = ? ' +
-            'program_id = ? ' +
-            'campus_id = ? ' +
-            'bio_ds = ? ' +
+            'ds_profile = ?, ' +
+            'id_program = ?, ' +
+            'id_campus = ?, ' +
+            'ds_bio = ? ' +
             'WHERE ds_email = ? ',
             [user.name, user.program, user.campus, user.bio, user.email],
             function(err, results) {

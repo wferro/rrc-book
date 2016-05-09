@@ -24,7 +24,7 @@ function initializeDBConnection(config) {
 module.exports = {
 
     connection :  initializeDBConnection({
-                        host     : '10.18.02.107',//'192.168.100.106',
+                        host     : '192.168.56.1',
                         user     : 'wferro',
                         password : '123456',
                         database : 'rrcbook'

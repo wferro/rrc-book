@@ -6,7 +6,13 @@ var router = express.Router();
 router.get('/', function(req, res) {
     usersDb.readAllUsers(
         function(results) {
-            res.json(results);
+
+            users = [];
+            results.forEach(function(result) {
+                users.push(new User(result.ds_profile, result.ds_email, result.id_program, result.id_campus, result.ds_bio));
+            })
+
+            res.json(users);
         },
 
         function(error){
@@ -22,7 +28,10 @@ router.get('/', function(req, res) {
 router.get('/:email', function(req, res) {
     usersDb.readUser(req.params.email,
         function(results) {
-            res.json(results);
+
+            if (results.length)
+                res.json(new User(results[0].ds_profile, results[0].ds_email, results[0].id_program, results[0].id_campus, results[0].ds_bio));
+            res.json({});
         },
 
         function(error){
@@ -37,7 +46,7 @@ router.get('/:email', function(req, res) {
 // POST
 router.post('/', function(req, res) {
     var user = new User(req.body.name, req.body.email);
-    usersDb.createUser(user,
+    usersDb.createUser(user, req.body.password,
         function() {
             res.json({message: "User created"})
         },
