@@ -2,9 +2,9 @@ var db = require('./../db');
 
 module.exports = {
 
-    readAllStudents: function(resultCallback, errorCallback) {
-        console.log('DB - readAllStudents');
-        db.connection.query("SELECT * FROM student",
+    readAllUsers: function(resultCallback, errorCallback) {
+        console.log('DB - readAllUsers');
+        db.connection.query("SELECT * FROM profile",
             function(err, result) {
                 if (err)return errorCallback(err);
                 return resultCallback(result);
@@ -12,9 +12,9 @@ module.exports = {
         );
     },
 
-    readStudent: function(email, resultCallback, errorCalback) {
-        console.log('DB - readStudent ' + email);
-        db.connection.query("SELECT * FROM student WHERE ds_email = ?", [email],
+    readUser: function(email, resultCallback, errorCalback) {
+        console.log('DB - readUser ' + email);
+        db.connection.query("SELECT * FROM profile WHERE ds_email = ?", [email],
             function(err, results) {
                 if (err) return errorCalback(err);
                 return resultCallback(results);
@@ -22,10 +22,10 @@ module.exports = {
         );
     },
 
-    createStudent: function(student, successCallback, errorCallback) {
-        console.log('DB - createStudent ' + JSON.stringify(student));
-        db.connection.query("INSERT INTO student VALUES(?, ?, ?)",
-            [student.email, student.name, student.program],
+    createUser: function(user, password, successCallback, errorCallback) {
+        console.log('DB - createUser ' + JSON.stringify(user));
+        db.connection.query("INSERT INTO profile VALUES(?, ?, null, null, null, ?)",
+            [user.email, user.name, password],
             function(err, results, fields) {
                 if (err) return errorCallback(err);
                 return successCallback();
@@ -33,10 +33,16 @@ module.exports = {
         );
     },
 
-    updateStudent: function(student, successCallback, errorCallback) {
-        console.log('DB - updateStudent ' + JSON.stringify(student));
-        db.connection.query('UPDATE student SET ds_student = ?, program_id = ? WHERE ds_email = ? ',
-            [student.name, student.program, student.email],
+    updateUser: function(user, successCallback, errorCallback) {
+        console.log('DB - updateUser ' + JSON.stringify(user));
+        debugger;
+        db.connection.query('UPDATE profile SET ' +
+            'ds_profile = ?, ' +
+            'id_program = ?, ' +
+            'id_campus = ?, ' +
+            'ds_bio = ? ' +
+            'WHERE ds_email = ? ',
+            [user.name, user.program, user.campus, user.bio, user.email],
             function(err, results) {
                 if (err) return errorCallback(err);
                 return successCallback(results);
@@ -44,9 +50,9 @@ module.exports = {
         );
     },
 
-    deleteStudent: function(email, successCallback, errorCallback) {
-        console.log('DB - deleteStudent ' + email);
-        db.connection.query("DELETE FROM student WHERE ds_email = ? ", [email],
+    deleteUser: function(email, successCallback, errorCallback) {
+        console.log('DB - deleteUser ' + email);
+        db.connection.query("DELETE FROM profile WHERE ds_email = ? ", [email],
             function(err, results) {
                 if (err) return errorCallback(err);
                 return successCallback(results);
