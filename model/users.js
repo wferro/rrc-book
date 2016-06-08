@@ -35,7 +35,6 @@ module.exports = {
 
     updateUser: function(user, successCallback, errorCallback) {
         console.log('DB - updateUser ' + JSON.stringify(user));
-        debugger;
         db.connection.query('UPDATE profile SET ' +
             'ds_profile = ?, ' +
             'id_program = ?, ' +
