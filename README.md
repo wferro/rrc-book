@@ -1,2 +1,2 @@
 # rrc-book
-Repository for an experimental nodejs projectk
+Repository for an experimental nodejs project...
